@@ -5,7 +5,7 @@ import '../assets.dart';
 
 class CustomAppBar extends StatelessWidget{
   final double scrollOffset;
-   CustomAppBar(this.scrollOffset);
+   CustomAppBar( {required this.scrollOffset});
   @override
   Widget build(BuildContext context) {
 return Container(

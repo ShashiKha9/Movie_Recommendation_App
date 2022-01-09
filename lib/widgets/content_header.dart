@@ -115,15 +115,21 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop>{
   Widget build(BuildContext context) {
     return GestureDetector(
     onTap:()=> _videoPlayerController!.value.isPlaying ?_videoPlayerController!.pause():_videoPlayerController!.play(),
-      child:Stack(
+      child:
+      Stack(
       alignment: Alignment.bottomLeft,
       children: [
-        AspectRatio(
-          aspectRatio: _videoPlayerController!.value.isInitialized?
-          _videoPlayerController!.value.aspectRatio:2.344,
-          child: _videoPlayerController!.value.isInitialized? VideoPlayer(_videoPlayerController!):
-          Image.asset(featuredContent.imageUrl,
-          fit: BoxFit.cover,),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: -1.0,
+          child: AspectRatio(
+            aspectRatio: _videoPlayerController!.value.isInitialized?
+            _videoPlayerController!.value.aspectRatio:2.344,
+            child: _videoPlayerController!.value.isInitialized? VideoPlayer(_videoPlayerController!):
+            Image.asset(featuredContent.imageUrl,
+            fit: BoxFit.cover,),
+          ),
         ),
         Container(
           height: 500.0,
@@ -170,11 +176,12 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop>{
                           ),
                         ),
                         onPressed: ()=>  _videoPlayerController!.value.isPlaying ? _videoPlayerController!.pause():_videoPlayerController!.play(),
-                        icon:  Icon (  _videoPlayerController!.value.isPlaying ?Icons.play_arrow :Icons.pause,size: 30.0,color: Colors.black,),
+                        icon:  Icon ( _videoPlayerController!.value.isPlaying? Icons.play_arrow:Icons.pause,size: 30.0,color: Colors.black,),
                         label:  Text(_videoPlayerController!.value.isPlaying ?"Play":"Pause",
                           style: TextStyle(fontSize: 16.0,
                               fontWeight: FontWeight.w600,
                               color: Colors.black),)),
+
                     const SizedBox(width: 16.0,),
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
@@ -232,8 +239,8 @@ class _PlayButton extends StatelessWidget{
        borderRadius: BorderRadius.circular(0.0),
      ),
    ),
-     onPressed: ()=>  _videoPlayerController!.value.isPlaying ? _videoPlayerController!.pause():_videoPlayerController!.play(),
-     icon:  Icon ( _videoPlayerController!.value.isPlaying ? Icons.play_arrow :Icons.pause,size: 30.0,color: Colors.black,),
+     onPressed: ()=>  print("Play"),
+     icon:  Icon ( Icons.play_arrow ,size: 30.0,color: Colors.black,),
      label: const Text("Play",
        style: TextStyle(fontSize: 16.0,
            fontWeight: FontWeight.w600,

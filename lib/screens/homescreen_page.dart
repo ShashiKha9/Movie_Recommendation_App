@@ -27,7 +27,7 @@ class HomeScreenPageState extends State<HomeScreenPage>{
   @override
   void initState(){
     _scrollController= ScrollController()..addListener(() {
-     // context.bloc<AppBarCubit>().setOffset(_scrollController.offset);
+      BlocProvider.of<AppBarCubit>(context).setOffset(_scrollController.offset);
 
       setState(() {
 

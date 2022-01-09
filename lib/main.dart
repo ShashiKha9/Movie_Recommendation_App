@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:netflix_clone/screens/homescreen_page.dart';
 import 'package:netflix_clone/screens/navscreen_page.dart';
+import 'package:netflix_clone/screens/splashscreen_page.dart';
 
 void main() {
-  runApp( MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  runApp(
+      MyApp());
 }
 
 class MyApp extends StatelessWidget{
@@ -15,7 +20,7 @@ class MyApp extends StatelessWidget{
         visualDensity:VisualDensity.adaptivePlatformDensity ,
         scaffoldBackgroundColor: Colors.black
       ),
-      home: NavScreenPage(),
+      home: SplashScreen(),
     );
 
   }

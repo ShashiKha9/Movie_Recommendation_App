@@ -8,7 +8,6 @@ import 'package:netflix_clone/widgets/Previews.dart';
 import 'package:netflix_clone/widgets/content_header.dart';
 import 'package:netflix_clone/widgets/content_list.dart';
 import 'package:netflix_clone/widgets/customappbar.dart';
-import 'package:bloc/bloc.dart';
 
 class HomeScreenPage extends StatefulWidget{
   const HomeScreenPage({Key? key}) : super(key: key);
@@ -16,7 +15,6 @@ class HomeScreenPage extends StatefulWidget{
   HomeScreenPageState createState()=> HomeScreenPageState(sintelContent);
 
 }
-
 
 class HomeScreenPageState extends State<HomeScreenPage>{
    final Content sintelContent;
@@ -28,7 +26,6 @@ class HomeScreenPageState extends State<HomeScreenPage>{
   void initState(){
     _scrollController= ScrollController()..addListener(() {
       BlocProvider.of<AppBarCubit>(context).setOffset(_scrollController.offset);
-
       setState(() {
 
       });
@@ -55,7 +52,7 @@ class HomeScreenPageState extends State<HomeScreenPage>{
         preferredSize: Size(screenSize.width,50.0),
         child: BlocBuilder<AppBarCubit,double>(
           builder: (context,_scrollOffset){
-            return   CustomAppBar(scrollOffset: _scrollOffset,);
+            return   CustomAppBar(scrollOffset: _scrollOffset);
     },
         )
       ),

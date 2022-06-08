@@ -28,7 +28,8 @@ class NavScreenPageState extends State<NavScreenPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider<AppBarCubit>(
+      body:
+      BlocProvider<AppBarCubit>(
         create: (context)=> AppBarCubit(),
           child: _screens[_currentIndex]),
       bottomNavigationBar: !Responsive.isDesktop( context)?

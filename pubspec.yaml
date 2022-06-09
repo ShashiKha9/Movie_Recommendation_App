@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   video_player: ^2.2.10
   flutter_bloc:
+  firebase_auth: ^3.3.19
+  firebase_core: ^1.17.1
+
+
 
 
 

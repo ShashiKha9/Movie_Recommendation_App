@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_clone/cubit/appbar_cubit.dart';
 import 'package:netflix_clone/screens/homescreen_page.dart';
 import 'package:netflix_clone/screens/navscreen_page.dart';
+import 'package:netflix_clone/screens/registerscreen_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Firebase.initializeApp();
   runApp(
       MyApp());
 }
@@ -22,10 +25,10 @@ class MyApp extends StatelessWidget{
               visualDensity:VisualDensity.adaptivePlatformDensity ,
               scaffoldBackgroundColor: Colors.black
           ),
-          home: HomeScreenPage(),
+          home: RegisterScreen(),
         )
     );
-      
+
 
   }
 }

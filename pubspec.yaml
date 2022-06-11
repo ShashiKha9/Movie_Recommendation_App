@@ -38,6 +38,8 @@ dependencies:
   flutter_bloc:
   firebase_auth: ^3.3.19
   firebase_core: ^1.17.1
+  http: ^0.13.4
+
 
 
 

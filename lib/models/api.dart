@@ -19,14 +19,14 @@ getLatest() async {
   final response = await http.get(latestUrl);
   Map<String,dynamic> map = json.decode(response.body);
   List<dynamic>data=map["results"];
-  print(data[11]["original_title"]);
+  // print(data[11]["original_title"]);
   return data;
 }
 getPopular() async {
   final response = await http.get(popularUrl);
   Map<String,dynamic> map = json.decode(response.body);
   List<dynamic>data=map["results"];
-  print(data);
+  // print(data);
   return data;
 }
 getUpcoming() async {
@@ -42,4 +42,11 @@ getTopRated() async {
   List<dynamic>data=map["results"];
   print(data);
   return data;
+}
+getWeather() async {
+  final response= await http.get(Uri.parse("http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=jsonri"));
+ Map<String,dynamic> map = json.decode(response.body);
+ List<dynamic> data = map["dataseries"];
+ print(data[0]["timepoint"]);
+ return data;
 }

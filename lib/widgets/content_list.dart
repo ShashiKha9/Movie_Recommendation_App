@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix_clone/models/api.dart';
 import 'package:netflix_clone/models/models.dart';
+import 'package:netflix_clone/screens/movies.dart';
 
 class ContentList extends StatelessWidget{
   final String title;
@@ -26,6 +28,7 @@ Padding(padding: EdgeInsets.symmetric(horizontal: 24.0),
       Container(
         height: isOriginals?500:220,
         child: FutureBuilder(
+          future: getLatest(),
           builder: (context,snapshot) {
             if (snapshot.hasData) {
               List latest = snapshot.data as List;
@@ -39,7 +42,9 @@ Padding(padding: EdgeInsets.symmetric(horizontal: 24.0),
                   itemBuilder: (context, index) {
                     final Content content = contentList[index];
                     return GestureDetector(
-                      onTap: () => print(content.name),
+                      onTap: () => Navigator.push(context, 
+                          MaterialPageRoute(builder: (context)=>
+                              MovieScreen(movie: latest[index]))),
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 8.0),
                         height: isOriginals ? 400.0 : 200.0,
@@ -49,7 +54,7 @@ Padding(padding: EdgeInsets.symmetric(horizontal: 24.0),
                                 image: NetworkImage(
                                     'http://image.tmdb.org/t/p/w500'
                                         + latest[index]["poster_path"]),
-                                fit: BoxFit.fill
+                                fit: BoxFit.cover
                             )
                         ),
                       ),

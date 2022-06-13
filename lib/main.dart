@@ -7,6 +7,7 @@ import 'package:netflix_clone/screens/movies.dart';
 import 'package:netflix_clone/screens/navscreen_page.dart';
 import 'package:netflix_clone/screens/registerscreen_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:netflix_clone/screens/upcomingscreen_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget{
               visualDensity:VisualDensity.adaptivePlatformDensity ,
               scaffoldBackgroundColor: Colors.black
           ),
-          home: NavScreenPage(),
+          home: UpcomingScreenPage(),
         )
     );
 

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/models/api.dart';
 import 'package:netflix_clone/models/models.dart';
-import 'package:netflix_clone/screens/movies.dart';
+import 'package:netflix_clone/screens/moviescreen.dart';
 
 class ContentList extends StatelessWidget{
   final String title;

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_clone/cubit/appbar_cubit.dart';
 import 'package:netflix_clone/screens/homescreen_page.dart';
 import 'package:bloc/bloc.dart';
+import 'package:netflix_clone/screens/upcomingscreen_page.dart';
 import 'package:netflix_clone/widgets/responsive.dart';
 
 class NavScreenPage extends StatefulWidget{
@@ -13,7 +14,7 @@ class NavScreenPageState extends State<NavScreenPage>{
   final List<Widget> _screens=[
     HomeScreenPage(key:PageStorageKey("homescreen")),
     Scaffold(),
-    Scaffold(),
+    UpcomingScreenPage(key: PageStorageKey("upcomingscreen")),
     Scaffold(),
     Scaffold(),
   ];

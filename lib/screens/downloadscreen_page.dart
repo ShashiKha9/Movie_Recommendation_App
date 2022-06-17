@@ -117,7 +117,7 @@ class _DownloadScreenPageState extends State<DownloadScreenPage> {
           )
         ],
       ),
-      
+
 
     );
   }

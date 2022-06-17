@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget{
               visualDensity:VisualDensity.adaptivePlatformDensity ,
               scaffoldBackgroundColor: Colors.black
           ),
-          home: DownloadScreenPage(),
+          home: NavScreenPage(),
         )
     );
 

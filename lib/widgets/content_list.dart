@@ -6,10 +6,11 @@ import 'package:netflix_clone/screens/moviescreen.dart';
 
 class ContentList extends StatelessWidget{
   final String title;
-  final List<Content> contentList;
   final bool isOriginals;
+  final Future futuredata;
 
-  const ContentList({Key? key,required this.contentList,
+  const ContentList({Key? key,
+    required this.futuredata,
     required this.title,
      this.isOriginals=false}) : super(key: key);
   @override
@@ -26,47 +27,45 @@ Padding(padding: EdgeInsets.symmetric(horizontal: 24.0),
     color: Colors.white),)
 ),
       Container(
-        height: isOriginals?500:220,
+        height: isOriginals ? 500.0 : 220.0,
         child: FutureBuilder(
-          future: getLatest(),
-          builder: (context,snapshot) {
+          future: futuredata,
+          builder: (context,AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              List latest = snapshot.data as List;
               return ListView.builder(
-                  itemCount: latest.length,
-                  padding: EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 16.0
-                  ),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    final Content content = contentList[index];
-                    return GestureDetector(
-                      onTap: () => Navigator.push(context, 
-                          MaterialPageRoute(builder: (context)=>
-                              MovieScreen(movie: latest[index]))),
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                        height: isOriginals ? 400.0 : 200.0,
-                        width: isOriginals ? 200.0 : 130.0,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    'http://image.tmdb.org/t/p/w500'
-                                        + latest[index]["poster_path"]),
-                                fit: BoxFit.cover
-                            )
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12.0,
+                  horizontal: 16.0,
+                ),
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context)=>
+                            MovieScreen(movie: snapshot.data[index]))),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                      height: isOriginals ? 400.0 : 200.0,
+                      width: isOriginals ? 200.0 : 130.0,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage('http://image.tmdb.org/t/p/w500'+
+                              snapshot.data[index]["poster_path"]),
+                          fit: BoxFit.fill,
                         ),
                       ),
-                    );
-                  });
+                    ),
+                  );
+                },
+              );
             }
             return Container();
           }
         ),
-      )
-    ]
-  )
-    );
+      ),
+    ],
+  ),
+);
   }
 }

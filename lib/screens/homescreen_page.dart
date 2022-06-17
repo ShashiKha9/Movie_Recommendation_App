@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_clone/cubit/appbar_cubit.dart';
+import 'package:netflix_clone/models/api.dart';
 import 'package:netflix_clone/models/models.dart';
 import 'package:netflix_clone/netflixdata/netflixdata.dart';
 import 'package:netflix_clone/widgets/Previews.dart';
@@ -73,15 +74,15 @@ class HomeScreenPageState extends State<HomeScreenPage>{
             child: ContentList(
               key: PageStorageKey("myList"),
               title: "My List",
-              contentList:myList,
+              futuredata: getLatest(),
             ),
           ),
           SliverToBoxAdapter(
             child: ContentList(
                 key: PageStorageKey("originals"),
                 title: "Netflix Originals",
-              contentList:originals,
-              isOriginals:true
+              futuredata: getUpcoming(),
+              isOriginals:true,
 
             ),
           ),
@@ -90,7 +91,7 @@ class HomeScreenPageState extends State<HomeScreenPage>{
             child: ContentList(
               key: PageStorageKey("trending"),
               title: "Trending",
-              contentList:trending,
+              futuredata: getPopular(),
             ),
           ),
           ),

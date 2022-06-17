@@ -19,9 +19,15 @@ getLatest() async {
   final response = await http.get(latestUrl);
   Map<String,dynamic> map = json.decode(response.body);
   List<dynamic>data=map["results"];
-  // print(data[11]["original_title"]);
+  print(data);
   return data;
+  // final response = await http.get(latestUrl);
+  // Map<String,dynamic> map = json.decode(response.body);
+  // List<dynamic>data=map["results"];
+  // print(data[11]["original_title"]);
 }
+
+
 getPopular() async {
   final response = await http.get(popularUrl);
   Map<String,dynamic> map = json.decode(response.body);
@@ -33,14 +39,14 @@ getUpcoming() async {
   final response = await http.get(upcomingUrl);
   Map<String,dynamic> map = json.decode(response.body);
   List<dynamic>data=map["results"];
-  print(data);
+  // print(data);
   return data;
 }
-getTopRated() async {
+ getTopRated() async {
   final response = await http.get(topRatedUrl);
   Map<String,dynamic> map = json.decode(response.body);
   List<dynamic>data=map["results"];
-  print(data);
+  // print(data);
   return data;
 }
 getWeather() async {

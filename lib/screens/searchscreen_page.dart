@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/models/api.dart';
+import 'package:http/http.dart' as http;
+
 
 class SearchScreenPage extends StatefulWidget {
   const SearchScreenPage({Key? key}) : super(key: key);
@@ -10,6 +14,95 @@ class SearchScreenPage extends StatefulWidget {
 }
 
 class _SearchScreenPageState extends State<SearchScreenPage> {
+  _SearchScreenPageState(){
+    _filter.addListener(() {
+      if(_filter.text.isEmpty){
+        setState((){
+          _searchText="";
+            filteredmovies=movies;
+        });
+      }else{
+        setState((){
+          _searchText= _filter.text;
+        });
+      }
+    });
+  }
+
+  final _filter = TextEditingController();
+  String _searchText="";
+  List movies= [];
+  List filteredmovies=[];
+
+void  _getMovies() async {
+      final response = await http.get(Uri.parse("https://api.themoviedb.org/3/movie/top_rated?api_key=cbe53c92b7ca5adb0d70ed0f27fd9432"));
+      Map<String,dynamic> map = json.decode(response.body);
+      List<dynamic>data=map["results"];
+      // print(data);
+
+
+    List tempList= [];
+    for(int i =0;i<data.length;i++){
+      tempList.add(data[i]);
+    }
+    setState((){
+      movies=tempList;
+      filteredmovies=movies;
+    });
+
+  }
+
+  Widget buildList(){
+    if(!_searchText.isEmpty){
+      List tempList = [];
+      for(int i =0;i<filteredmovies.length;i++){
+        if(filteredmovies[i]["title"]
+            .toLowerCase()
+            .contains(_searchText.toLowerCase())){
+          tempList.addAll(filteredmovies[i]);
+        }
+      }
+      filteredmovies=tempList;
+    }
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: ScrollPhysics(),
+      separatorBuilder: (context, index) {
+        return SizedBox(height: 3,);
+      },
+      itemCount:movies== null?0:filteredmovies.length,
+      itemBuilder: (context, index) {
+        return InkWell(
+          child: ListTile(
+            leading: Container(
+              height: 120,
+              width: 120,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          'http://image.tmdb.org/t/p/w500' +
+                              filteredmovies[index]["backdrop_path"]))
+              ),
+            ),
+            title: Text(filteredmovies[index]["title"],
+              maxLines: 2,
+              style: TextStyle(color: Colors.white),),
+
+            trailing: Icon(Icons.play_circle_outline,
+              color: Colors.white,size: 30,),
+
+          ),
+          onTap: (){},
+        );
+      },
+    );
+  }
+  @override
+  void initState(){
+    _getMovies();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -19,6 +112,8 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
             Padding(
               padding: EdgeInsets.all(12),
               child: TextFormField(
+                controller: _filter,
+                style: TextStyle(color: Colors.white),
                 cursorHeight: 20,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
@@ -47,47 +142,11 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                           letterSpacing: 0.5,
                           fontWeight: FontWeight.bold),),
                   ),
-                  FutureBuilder(
-                    future: getTopRated(),
-                      builder: (context,snapshot){
-                      if(snapshot.hasData) {
-                        List topRated = snapshot.data as List;
-                        return ListView.separated(
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          separatorBuilder: (context, index) {
-                            return SizedBox(height: 3,);
-                          },
-                          itemCount:topRated.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              child: ListTile(
-                                leading: Container(
-                                  height: 120,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'http://image.tmdb.org/t/p/w500' +
-                                              topRated[index]["backdrop_path"]))
-                                  ),
-                                ),
-                                title: Text(topRated[index]["title"],
-                                  maxLines: 2,
-                                  style: TextStyle(color: Colors.white),),
 
-                                trailing: Icon(Icons.play_circle_outline,
-                                  color: Colors.white,size: 30,),
-                                
-                              ),
-                              onTap: (){},
-                            );
-                          },
-                        );
-                      }
-                      return Container();
-                  }
-                  )
+                       buildList(),
+
+
+
                 ],
               ),
             )

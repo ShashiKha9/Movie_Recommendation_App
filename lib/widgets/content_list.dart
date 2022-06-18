@@ -52,7 +52,7 @@ Padding(padding: EdgeInsets.symmetric(horizontal: 24.0),
                         image: DecorationImage(
                           image: NetworkImage('http://image.tmdb.org/t/p/w500'+
                               snapshot.data[index]["poster_path"]),
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),

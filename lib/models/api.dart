@@ -49,6 +49,8 @@ getUpcoming() async {
   // print(data);
   return data;
 }
+
+
 getWeather() async {
   final response= await http.get(Uri.parse("http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=jsonri"));
  Map<String,dynamic> map = json.decode(response.body);

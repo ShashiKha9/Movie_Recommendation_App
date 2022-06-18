@@ -28,7 +28,6 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
       }
     });
   }
-
   final _filter = TextEditingController();
   String _searchText="";
   List movies= [];
@@ -49,17 +48,17 @@ void  _getMovies() async {
       movies=tempList;
       filteredmovies=movies;
     });
-
   }
 
+
   Widget buildList(){
-    if(!_searchText.isEmpty){
+    if(!(_searchText.isEmpty)){
       List tempList = [];
       for(int i =0;i<filteredmovies.length;i++){
         if(filteredmovies[i]["title"]
             .toLowerCase()
             .contains(_searchText.toLowerCase())){
-          tempList.addAll(filteredmovies[i]);
+          tempList.add(filteredmovies[i]);
         }
       }
       filteredmovies=tempList;
@@ -70,7 +69,7 @@ void  _getMovies() async {
       separatorBuilder: (context, index) {
         return SizedBox(height: 3,);
       },
-      itemCount:movies== null?0:filteredmovies.length,
+      itemCount:filteredmovies.length,
       itemBuilder: (context, index) {
         return InkWell(
           child: ListTile(
@@ -90,13 +89,13 @@ void  _getMovies() async {
 
             trailing: Icon(Icons.play_circle_outline,
               color: Colors.white,size: 30,),
-
           ),
           onTap: (){},
         );
       },
     );
   }
+
   @override
   void initState(){
     _getMovies();
@@ -122,10 +121,8 @@ void  _getMovies() async {
                   fillColor: Colors.grey.withOpacity(0.4),
                   hintText: "Search for a movie, Tv shows......",
                   hintStyle: TextStyle(color: Colors.grey),
-
                   prefixIcon: Icon(Icons.search_outlined,
                     color: Colors.grey,),
-
                   suffixIcon: Icon(Icons.mic,color: Colors.grey,)
                 ),
 
@@ -142,11 +139,7 @@ void  _getMovies() async {
                           letterSpacing: 0.5,
                           fontWeight: FontWeight.bold),),
                   ),
-
                        buildList(),
-
-
-
                 ],
               ),
             )

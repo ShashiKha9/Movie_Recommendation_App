@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:netflix_clone/screens/homescreen_page.dart';
 import 'package:netflix_clone/screens/navscreen_page.dart';
 
@@ -19,21 +20,53 @@ class RegisterScreenState  extends State<RegisterScreen>{
   final passwordController = TextEditingController();
 
   int _selectedIndex=0;
+   String errorMessage="";
 
   SignIn() async {
-    print(('Error'));
-    setState((){
+    setState(() {
       isLoading = true;
     });
-    print(isLoading);
-    final user = await _auth.signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text);
 
-    if(user != null){
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context)=> NavScreenPage()));
+    try {
+      final user = await _auth.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+
+      if (user != null) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => NavScreenPage()));
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      switch (e.code) {
+        case "invalid-email":
+          errorMessage = "Your email address appears to be incorrect.";
+          break;
+        case "wrong-password":
+          errorMessage = "Your password is wrong.";
+          break;
+        case "user-not-found":
+          errorMessage = "User with this email doesn't exist.";
+          break;
+        case "user-disabled":
+          errorMessage = "User with this email has been disabled.";
+          break;
+        case "too-many-requests":
+          errorMessage = "Please try again";
+          break;
+        case "operation-not-allowed":
+          errorMessage = "Signing in with Email and Password is not enabled.";
+          break;
+        default:
+          errorMessage = "An undefined Error happened.";
+      }
+      Fluttertoast.showToast(msg: errorMessage,
+          gravity: ToastGravity.CENTER,toastLength: Toast.LENGTH_LONG);
     }
+    setState(() {
+      isLoading = false;
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +82,10 @@ class RegisterScreenState  extends State<RegisterScreen>{
 
   }
   Widget _renderSignIn(){
-    return  Container(
+    return isLoading?Center(child:
+    CircularProgressIndicator(color: Colors.red,
+      strokeWidth: 2.0,),):
+    Container(
       padding: EdgeInsets.fromLTRB(60,0,60,0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -97,9 +133,8 @@ class RegisterScreenState  extends State<RegisterScreen>{
                 side: BorderSide(color: Colors.grey,width: 1.0)
             ),
                 onPressed: ()  {
-              SignIn();
-                  isLoading? CircularProgressIndicator:null;
-                },child: const Text("Sign in",
+           SignIn();
+                },child:const Text("Sign in",
                   style: TextStyle(color: Colors.white,
                       fontSize: 22,
                       fontWeight: FontWeight.bold),)),
@@ -211,13 +246,6 @@ class RegisterScreenState  extends State<RegisterScreen>{
             },
           ),
           const SizedBox(height: 10,),
-          MaterialButton(
-            child: Text("Forgot your password",
-              style: TextStyle(color: Colors.white),),
-            onPressed: () async {
-              print("forgot password");
-            },
-          ),
         ],
       ),
     );

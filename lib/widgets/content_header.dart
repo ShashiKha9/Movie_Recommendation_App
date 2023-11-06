@@ -1,12 +1,17 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:netflix_clone/models/api.dart';
 import 'package:netflix_clone/models/models.dart';
+import 'package:netflix_clone/widgets/Previews.dart';
+import 'package:netflix_clone/widgets/content_list.dart';
 import 'package:netflix_clone/widgets/responsive.dart';
 import 'package:netflix_clone/widgets/vertical_icon_button.dart';
 import 'package:video_player/video_player.dart';
 
 import '../assets.dart';
+import '../netflixdata/netflixdata.dart';
 
 class ContentHeader extends StatelessWidget{
   final Content featuredContent;
@@ -36,10 +41,23 @@ class _ContentHeaderMobile extends StatelessWidget{
       children: [
         Container(
           height: 500.0,
-          decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage(featuredContent.imageUrl ),
-                fit: BoxFit.cover),
-          ),
+          child: CarouselSlider.builder(
+            itemCount: 8,
+              options: CarouselOptions(
+                autoPlay: true,
+                  aspectRatio: 16/9,
+                  height: 400.0,
+              viewportFraction: 1),
+            itemBuilder: (context,index,realIndex){
+                return ContentList(
+                    futuredata: getTopRated(),
+                    title: "");
+            },
+         ),
+          // decoration: BoxDecoration(
+          //   image: DecorationImage(image: AssetImage(featuredContent.imageUrl ),
+          //       fit: BoxFit.cover),
+          // ),
         ),
         Container(
           height: 500.0,

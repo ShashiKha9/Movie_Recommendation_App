@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,15 +62,32 @@ class HomeScreenPageState extends State<HomeScreenPage>{
         controller: _scrollController,
         slivers: [
           SliverToBoxAdapter(
-            child: ContentHeader(featuredContent:sintelContent ),
+            child: CarouselSlider.builder(
+              itemCount: 5,
+                options: CarouselOptions(
+                  height: 300,
+                  autoPlay: true,
+                  aspectRatio: 16/9,
+                  viewportFraction: 1
+                ),
+            itemBuilder: (context,index,realIndex) {
+                  return Container(
+                    child: ContentList(futuredata: getTopRated(), title: "",),
+
+                  );
+                  
+            }),
           ),
-          SliverPadding(padding: const EdgeInsets.only(top: 20.0),
-            sliver: SliverToBoxAdapter(
-              child: Previews(
-                key: PageStorageKey("previews"),
-                title: 'Previews', contentList: previews,),
-            ),
-          ),
+          // SliverToBoxAdapter(
+          //   child: ContentHeader(featuredContent:sintelContent ),
+          // ),
+          // SliverPadding(padding: const EdgeInsets.only(top: 20.0),
+          //   sliver: SliverToBoxAdapter(
+          //     child: Previews(
+          //       key: PageStorageKey("previews"),
+          //       title: 'Previews', contentList: previews,),
+          //   ),
+          // ),
           SliverToBoxAdapter(
             child: ContentList(
               key: PageStorageKey("myList"),

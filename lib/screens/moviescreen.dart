@@ -1,5 +1,13 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix_clone/models/models.dart';
+import 'package:netflix_clone/screens/registerscreen_page.dart';
+import 'package:netflix_clone/widgets/comment.dart';
+import 'package:video_player/video_player.dart';
 
 class MovieScreen extends StatefulWidget {
   dynamic movie;
@@ -10,6 +18,35 @@ class MovieScreen extends StatefulWidget {
 }
 
 class _MovieScreenState extends State<MovieScreen> {
+  late VideoPlayerController _controller;
+
+  final _commentController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.networkUrl(Uri.parse(
+        'https://vimeo.com/124564828'))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {
+          _controller.play();
+        });
+      });
+  }
+
+
+
+  void addComment(String commentText){
+    FirebaseFirestore.instance.collection("User Posts")
+        .doc(widget.movie.toString())
+        .collection("Comments")
+        .add({
+       "CommentText": commentText,
+      "CommentBy": FirebaseAuth.instance.currentUser!.email,
+      "CommentTime": Timestamp.now()
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +69,7 @@ class _MovieScreenState extends State<MovieScreen> {
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Stack(
                   alignment: Alignment.center,
                   children: [
@@ -62,43 +99,65 @@ class _MovieScreenState extends State<MovieScreen> {
                   style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 15),),
-                Padding(padding: EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 40,
-                    child: ElevatedButton(onPressed:(){},
-                        child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.play_arrow,color: Colors.black,),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text("Play",style: TextStyle(color: Colors.black),),
-                          ],
-                        ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white)
-                    ),),
 
-                  ),
-                ),
-                Padding(padding: EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 40,
-                    child: ElevatedButton(onPressed:(){},
-                      child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.download,color: Colors.white,),
-                          SizedBox(
-                            width: 10,
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: [
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 3,vertical: 16),
+                      child: SizedBox(
+                        width: 180,
+                        height: 40,
+
+
+
+
+                        child: ElevatedButton(onPressed:(){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                              AspectRatio(aspectRatio: _controller.value.aspectRatio,
+                                child: VideoPlayer(_controller),)));
+
+
+
+                        },
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.play_arrow,color: Colors.black,),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Play",style: TextStyle(color: Colors.black),),
+                            ],
                           ),
-                          Text("Download",style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.grey[900])
-                      ),),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.white)
+                          ),),
 
-                  ),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 180,
+                        height: 40,
+                        child: ElevatedButton(onPressed:(){},
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.download,color: Colors.white,),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text("Download",style: TextStyle(color: Colors.white),),
+                            ],
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.grey[900])
+                          ),),
+
+                      ),
+                    ),
+                  ],
+
                 ),
                 Text(widget.movie["overview"],
                   style: const TextStyle(color: Colors.white70,
@@ -132,17 +191,70 @@ class _MovieScreenState extends State<MovieScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buttons(Icons.add, "My List"),
-                      buttons(Icons.thumb_up_sharp, "Rate"),
-                      buttons(Icons.share, "Share")
+                Text("Reviews",style: TextStyle(color: Colors.white,fontSize: 18,),),
 
-                    ],
-                  ),
-                )
+                Divider(
+                  color: Colors.grey,
+                ),
+
+                // Container(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: [
+                //       buttons(Icons.add, "My List"),
+                //       buttons(Icons.thumb_up_sharp, "Rate"),
+                //       buttons(Icons.share, "Share")
+                //
+                //     ],
+                //   ),
+                // ),
+                Comment(text: "", time: "", user: RegisterScreenState().emailController.text),
+                //comments
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection("User Posts")
+                    .doc(widget.movie.toString())
+                    .collection("Comments")
+                    .orderBy("CommentTime",descending: true)
+                    .snapshots(),
+                    builder: (context,snapshot){
+                    if(!snapshot.hasData){
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    //
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: snapshot.data!.docs.map((doc){
+                          final commentData = doc.data() as Map<String,dynamic>;
+                          return Comment(text: commentData["CommentText"],
+                            user: commentData["CommentBy"],
+                            time: " ");
+
+
+                        }).toList(),
+
+                      );
+
+                }),
+                
+                //
+                // TextField(
+                //   controller: _commentController,
+                //   decoration: InputDecoration(
+                //     hintText: "comments",
+                //   ),
+                //
+                // ),
+                // TextButton(onPressed: (){
+                //   addComment(_commentController.text);
+                //
+                //
+                //   _commentController.clear();
+                // },
+                //     child: Text("Add"))
+
 
               ],
             ),

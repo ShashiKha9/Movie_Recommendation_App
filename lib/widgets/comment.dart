@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/screens/moviescreen.dart';
@@ -33,6 +35,7 @@ class Comment extends StatelessWidget {
           Text(user,style: TextStyle(color: Colors.white),),
 
           Text(text,style: TextStyle(color: Colors.white)),
+
           Text(time,style: TextStyle(color: Colors.white)),
 
 

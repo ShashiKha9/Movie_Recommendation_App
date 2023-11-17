@@ -61,23 +61,34 @@ class HomeScreenPageState extends State<HomeScreenPage>{
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          SliverToBoxAdapter(
-            child: CarouselSlider.builder(
-              itemCount: 5,
-                options: CarouselOptions(
-                  height: 300,
-                  autoPlay: true,
-                  aspectRatio: 16/9,
-                  viewportFraction: 1
-                ),
-            itemBuilder: (context,index,realIndex) {
-                  return Container(
-                    child: ContentList(futuredata: getTopRated(), title: "",),
-
-                  );
-                  
-            }),
-          ),
+          // SliverToBoxAdapter(
+          //   child: SizedBox(
+          //     width: double.infinity,
+          //     child: CarouselSlider.builder(
+          //       itemCount: 10,
+          //         options: CarouselOptions(
+          //           height: 200,
+          //           autoPlay: true,
+          //           aspectRatio: 16/9,
+          //           enlargeCenterPage: true,
+          //           pageSnapping: true,
+          //           autoPlayCurve: Curves.fastOutSlowIn,
+          //           viewportFraction: 0.55
+          //         ),
+          //     itemBuilder: (context,index,realIndex) {
+          //           return ClipRRect(
+          //             borderRadius: BorderRadius.circular(12),
+          //             child: Container(
+          //               height: 200,
+          //               width: 300,
+          //               child: ContentList(futuredata: getTopRated(), title: "",),
+          //
+          //             ),
+          //           );
+          //
+          //     }),
+          //   ),
+          // ),
           // SliverToBoxAdapter(
           //   child: ContentHeader(featuredContent:sintelContent ),
           // ),

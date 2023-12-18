@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix_clone/models/api.dart';
 import 'package:http/http.dart' as http;
 
@@ -63,36 +64,63 @@ void  _getMovies() async {
       }
       filteredmovies=tempList;
     }
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: ScrollPhysics(),
-      separatorBuilder: (context, index) {
-        return SizedBox(height: 3,);
-      },
-      itemCount:filteredmovies.length,
-      itemBuilder: (context, index) {
-        return InkWell(
-          child: ListTile(
-            leading: Container(
-              height: 120,
-              width: 120,
+    return Container(
+      decoration: BoxDecoration(
+
+        borderRadius: BorderRadius.circular(12)
+      ),
+      child: ListView.separated(
+        shrinkWrap: true,
+        physics: ScrollPhysics(),
+        separatorBuilder: (context, index) {
+          return SizedBox(height: 3,);
+        },
+        itemCount:filteredmovies.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            child: Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          'http://image.tmdb.org/t/p/w500' +
-                              filteredmovies[index]["backdrop_path"]))
+                color: Color(0xff251546).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(13),
+
+                
+              ),
+              child: ListTile(
+                leading: Container(
+                  height: 120,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              'http://image.tmdb.org/t/p/w500' +
+                                  filteredmovies[index]["backdrop_path"]))
+                  ),
+                ),
+                title: Text(filteredmovies[index]["title"],
+                  maxLines: 2,
+                    style: GoogleFonts.lato(color: Colors.white70,fontSize: 16)),
+                subtitle: Text(filteredmovies[index]['release_date'].toString().substring(0,4),
+                style: GoogleFonts.lato(color: Colors.white38,fontSize: 13),),
+
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(filteredmovies[index]['vote_average'].toString().substring(0,3),
+                      style: GoogleFonts.lato(color: Colors.white70,fontSize: 14),),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Icon(Icons.star,color: Colors.yellow,size: 18,)
+                  ],
+                )
+           
               ),
             ),
-            title: Text(filteredmovies[index]["title"],
-              maxLines: 2,
-              style: TextStyle(color: Colors.white),),
-
-            trailing: Icon(Icons.play_circle_outline,
-              color: Colors.white,size: 30,),
-          ),
-          onTap: (){},
-        );
-      },
+            onTap: (){},
+          );
+        },
+      ),
     );
   }
 
@@ -106,25 +134,30 @@ void  _getMovies() async {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+
         body: Column(
           children: [
             Padding(
               padding: EdgeInsets.all(12),
               child: TextFormField(
                 controller: _filter,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white70),
                 cursorHeight: 20,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
+
                   filled: true,
-                  border: InputBorder.none,
-                  fillColor: Colors.grey.withOpacity(0.4),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12)
+                  ),
+                  fillColor:Color(0xff251546).withOpacity(0.6),
                   hintText: "Search for a movie, Tv shows......",
                   hintStyle: TextStyle(color: Colors.grey),
                   prefixIcon: Icon(Icons.search_outlined,
                     color: Colors.grey,),
                   suffixIcon: Icon(Icons.mic,color: Colors.grey,)
                 ),
+
 
               ),
             ),
@@ -134,10 +167,11 @@ void  _getMovies() async {
                   Padding(
                     padding:EdgeInsets.only(left: 20,bottom: 10,top: 10),
                     child: Text("Top Searches",
-                      style: TextStyle(color: Colors.white,
-                          fontSize: 22,
-                          letterSpacing: 0.5,
-                          fontWeight: FontWeight.bold),),
+                      style: GoogleFonts.lato(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600
+                      ),),
                   ),
                        buildList(),
                 ],

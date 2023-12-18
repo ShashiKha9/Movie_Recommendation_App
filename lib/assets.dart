@@ -1,8 +1,8 @@
 class Assets {
   static const String assets = 'assets/';
 
-  static const String netflixLogo0 = '${assets}S.png';
-  static const String netflixLogo1 = '${assets}S.png';
+  static const String netflixLogo0 = '${assets}popcorn4.png';
+  static const String netflixLogo1 = '${assets}popcorn4.png';
 
   static const String sintel = '${assets}sintel.jpg';
   static const String sintelTitle = '${assets}sintel_title.png';

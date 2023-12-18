@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix_clone/screens/homescreen_page.dart';
 import 'package:netflix_clone/screens/navscreen_page.dart';
 
@@ -70,6 +71,8 @@ class RegisterScreenState  extends State<RegisterScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Theme.of(context).primaryColor,
       extendBodyBehindAppBar: true,
       body:IndexedStack(
         index: _selectedIndex,
@@ -91,53 +94,92 @@ class RegisterScreenState  extends State<RegisterScreen>{
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: Image.asset(Assets.netflixLogo1,width: 200,),
+          Row(
+            children: [
+              Image.asset(Assets.netflixLogo1,width: 150,),
+
+              Column(
+                children: [
+                  Text("Welcome",style: GoogleFonts.lato(color: Colors.white38,fontSize: 24),),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("Let's Discover\nyour next movie",style: GoogleFonts.lato(color: Colors.white38,fontSize: 16,),maxLines: 2,),
+
+                ],
+              ),
+
+
+
+
+
+
+
+
+            ],
           ),
+
+
           const SizedBox(height: 60,),
           TextField(
+            style: TextStyle(color: Colors.white70),
             controller: emailController,
             autofocus: false,
             autocorrect: false,
             enableSuggestions: false,
             decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey,
-                labelText: "Email",
+                fillColor:  Color(0xff251546),
+                hintText: "Email",
+                hintStyle: TextStyle(color: Colors.white38),
                 floatingLabelStyle: TextStyle(color: Colors.black),
-                focusedBorder: InputBorder.none,
-                border: InputBorder.none
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20)
+                )
             ),
           ),
+          SizedBox(
+            height: 15,
+          ),
           TextField(
+            style: TextStyle(color: Colors.white70),
+
             controller: passwordController,
             autofocus: false,
             autocorrect: false,
             enableSuggestions: false,
             decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey,
-                labelText: "Password",
+                fillColor:  Color(0xff251546),
+                hintText: "Password",
+                hintStyle: TextStyle(color: Colors.white38),
+
                 floatingLabelStyle: TextStyle(color: Colors.black),
                 focusedBorder: InputBorder.none,
-                border: InputBorder.none
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20)
+                )
             ),
 
           ),
           SizedBox(height: 20.0,),
 
           SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(style: OutlinedButton.styleFrom(
+            width: 200,
+            child: OutlinedButton(
+
+                style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                side: BorderSide(color: Colors.grey,width: 1.0)
+                side: BorderSide(color: Colors.white38,width: 1.0,),
+                  shape: StadiumBorder()
+
+
             ),
                 onPressed: ()  {
            SignIn();
-                },child:const Text("Sign in",
-                  style: TextStyle(color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),)),
+                },child: Text("Sign in",
+                  style: GoogleFonts.lato(fontSize: 18,
+                      color: Colors.white70,fontWeight: FontWeight.w600),)),
           ),
           const SizedBox(height: 40,),
           MaterialButton(
@@ -168,60 +210,91 @@ class RegisterScreenState  extends State<RegisterScreen>{
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: Image.asset(Assets.netflixLogo1,width: 200,),
+          Row(
+            children: [
+              Image.asset(Assets.netflixLogo1,width: 150,),
+
+              Column(
+                children: [
+                  Text("Welcome",style: GoogleFonts.lato(color: Colors.white38,fontSize: 24),),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("Let's Discover\nyour next movie",style: GoogleFonts.lato(color: Colors.white38,fontSize: 16,),maxLines: 2,),
+
+                ],
+              ),
+
+
+
+            ],
           ),
           const SizedBox(height: 60,),
           TextField(
+            style: TextStyle(color: Colors.white70),
             controller: nameController,
             autofocus: false,
             autocorrect: false,
             enableSuggestions: false,
             decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey,
-                labelText: "Name",
+                fillColor:  Color(0xff251546),
+                hintText: "Name",
+                hintStyle: TextStyle(color: Colors.white38),
                 floatingLabelStyle: TextStyle(color: Colors.black),
-                focusedBorder: InputBorder.none,
-                border: InputBorder.none
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20)
+                )
             ),
           ),
+          SizedBox(
+            height: 15,
+          ),
           TextField(
+            style: TextStyle(color: Colors.white70),
             controller: emailController,
             autofocus: false,
             autocorrect: false,
             enableSuggestions: false,
             decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey,
-                labelText: "Email",
+                fillColor:  Color(0xff251546),
+                hintText: "Email",
+                hintStyle: TextStyle(color: Colors.white38),
                 floatingLabelStyle: TextStyle(color: Colors.black),
-                focusedBorder: InputBorder.none,
-                border: InputBorder.none
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20)
+                )
             ),
           ),
+          SizedBox(
+            height: 15,
+          ),
           TextField(
+            style: TextStyle(color: Colors.white70),
             controller: passwordController,
             autofocus: false,
             autocorrect: false,
             enableSuggestions: false,
             decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey,
-                labelText: "Password",
+                fillColor:  Color(0xff251546),
+                hintText: "Password",
+                hintStyle: TextStyle(color: Colors.white38),
                 floatingLabelStyle: TextStyle(color: Colors.black),
-                focusedBorder: InputBorder.none,
-                border: InputBorder.none
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20)
+                )
             ),
-
           ),
           SizedBox(height: 20.0,),
 
           SizedBox(
-            width: double.infinity,
+            width: 180,
             child: OutlinedButton(style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                side: BorderSide(color: Colors.grey,width: 1.0)
+                side: BorderSide(color: Colors.white38,width: 1.0),
+              shape: StadiumBorder(),
             ),
                 onPressed: () async {
                   final user = _auth.createUserWithEmailAndPassword(
@@ -232,10 +305,9 @@ class RegisterScreenState  extends State<RegisterScreen>{
                   }
                 },
 
-                child: const Text("Sign Up",
-                  style: TextStyle(color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),)),
+                child:  Text("Sign Up",
+                  style: GoogleFonts.lato(color: Colors.white70,
+                      fontSize: 18,fontWeight: FontWeight.w600))),
           ),
           const SizedBox(height: 40,),
           MaterialButton(

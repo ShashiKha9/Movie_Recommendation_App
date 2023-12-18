@@ -3,8 +3,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:csv/csv.dart';
+import 'package:excel/excel.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:netflix_clone/models/topRatedModel.dart';
 
+import 'movie.dart';
 import 'movieModel.dart';
 
 final latestUrl= Uri.parse(
@@ -54,12 +59,19 @@ getUpcoming() async {
   // print(data);
   return data;
 }
- getTopRated() async {
+ Future<TopRatedModel>getTopRated() async {
+   print("shashi 1: ");
   final response = await http.get(topRatedUrl);
-  Map<String,dynamic> map = json.decode(response.body);
-  List<dynamic>data=map["results"];
-  // print(data);
-  return data;
+   print("shashi 3: ");
+  // Map<String,dynamic> map = json.decode(response.body);
+   print("shashi 4: ");
+   Map<String, dynamic> json = jsonDecode(response.body);
+
+  // TopRatedModel data=response.body as TopRatedModel;
+   print("shashi 5: ");
+
+  print("shashi 2: $json");
+  return TopRatedModel.fromJson(json);
 }
 
 
@@ -81,7 +93,7 @@ getReviews(int movieId) async {
   }
 
 
-  Future<String> getPoster(String movieId) async {
+    getPoster(String movieId) async {
   final response= await http.get(Uri.parse("https://api.themoviedb.org/3/movie/$movieId?api_key=cbe53c92b7ca5adb0d70ed0f27fd9432"));
   Map<String,dynamic> map = json.decode(response.body);
 
@@ -94,29 +106,115 @@ getReviews(int movieId) async {
 
 
 }
+// List<String> dropdownItems = [];
+//
+//  void loadExcel() async {
+//   ByteData data = await rootBundle.load('assets/flutterexceldata.xlsx');
+//   print("ashish 1:${data}");
+//   List<int> bytes = data.buffer.asUint8List();
+//   print("ashish 2:${bytes}");
+//   var excel = Excel.decodeBytes(bytes);
+//   print("ashish 3:${excel}");
+//   int columnIndex = 0; // Change this to the desired column index
+//   var cellValue;
+//
+//   print("ashish 8:${excel.tables.keys}");
+//   for (var table in excel.tables.keys) {
+//     print("ashish 3:${table.length}");
+//     print("ashish 4:${excel.tables[table]!.maxColumns}");
+//     print("ashish 5:${excel.tables[table]!.rows.length}");
+//     print("ashish 6:${excel.tables[table]!.sheetName}");
+//     // print(excel.tables[table].d);
+//
+//     print("ashish 9:${excel.tables[table]!.rows.length}");
+//     for (var row in excel.tables[table]!.rows) {
+//       // Access the value in the specified column
+//        cellValue = row[columnIndex];
+//        dropdownItems.add(cellValue);
+//       print("ashish 7:${cellValue.value.toString()}");
+//     }
+//   }
+// }
 
-Future<List<MovieModel>> getRecommend(String title) async {
+
+
+// Specify the column index (0-based) that you want to retrieve data from
+int columnIndex = 0; // Change this to the desired column index
+
+
+// Future loadCSV() async {
+//   String csvData = await rootBundle.loadString('assets/movies.csv');
+//
+//   List<List<dynamic>> csvTable = CsvToListConverter().convert(csvData);
+//   // print("movie: $csvTable");
+//
+//
+//   // Assuming the CSV file has a header and "original_title" is a column name
+//   int originalTitleIndex = csvTable[0].indexOf("original_title");
+//
+//   print("movie: ${csvTable[0][44]}");
+//   for (int i = 1; i <= csvTable.length; i++) {
+//     originalTitles.add(csvTable[i][originalTitleIndex]);
+//     // print("movie: ${originalTitles}");
+//
+//
+//   }
+// }
+
+//
+// Future<List<List<dynamic>>> readMovieData() async {
+//   String data = await rootBundle.loadString('assets/movies.csv');
+//   List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter().convert(data);
+//   return rowsAsListOfValues;
+// }
+//
+// Future<List<Movie>> getMovies() async {
+//   List<List<dynamic>> movieData = await readMovieData();
+//   print("movie: ${movieData}");
+//
+//   List<Movie> movies = [];
+//   // print(movieData);
+//
+//   for (var row in movieData) {
+//     movies.add(Movie(title: row[6]));
+//     // print("movie: ${row[6]}");
+//   }
+//
+//   return movies;
+// }
+
+Future<String?> getRecommend(String title) async {
   // final response = await http.get(Uri.parse("http://10.0.2.2:8000/movie?title=$title"), duration: Duration(seconds: 10),
   // );
-  try {
-    var  response = await http.get(Uri.parse("http://10.0.2.2:8000/movie?title=$title"))
-        .timeout(const Duration(seconds: 2),
-    onTimeout: (){
-          return http.Response('sError',408);
-    });
+  // try {
+  //   var  response = await http.get(Uri.parse("http://10.0.2.2:8000/movie?title=$title"));
+
     // Process the response
+  try {
+    print("shashi 1");
+    var  response = await http.get(Uri.parse("http://10.0.2.2:8000/movie?title=avatar"));
+    print("shashi 2': ${response.body}");
+
 
     List<Map<String, dynamic>> jsonData = (json.decode(response.body) )
-        .cast<Map<String, dynamic>>();
+            .cast<Map<String, dynamic>>();
+    print("shashi 3': $jsonData");
+
 
     List<MovieModel> movies = jsonData.map((map) => MovieModel.fromJson(map)).toList();
+    print("shashi 4': ${movies[0].name}");
 
-    return movies;
+    return response.body.toString();
+  } catch (e) {
+    print("abc failed");
+    return null;
+  }
+
 
 
     // Cast each map to a Movie object
-    print('Response: ${response.body}');
-  } on TimeoutException catch (e) {
+    // print('Response: ${response.body}');
+ /* } on TimeoutException catch (e) {
     // Handle timeout exception
     print('Timeout: $e');
 
@@ -128,7 +226,7 @@ Future<List<MovieModel>> getRecommend(String title) async {
     // Handle other exceptions
     print('Error: $e');
 
-  }
+  }*/
 
 
   // print("abc"+  response.body);
@@ -150,7 +248,6 @@ Future<List<MovieModel>> getRecommend(String title) async {
 
 
 
-return null!;
   // print("shashi+ ${getPoster(movies[0].id)}");
   // final response = await http.get(latestUrl);
   // Map<String,dynamic> map = json.decode(response.body);

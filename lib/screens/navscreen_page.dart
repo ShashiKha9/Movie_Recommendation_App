@@ -5,6 +5,7 @@ import 'package:netflix_clone/cubit/appbar_cubit.dart';
 import 'package:netflix_clone/screens/downloadscreen_page.dart';
 import 'package:netflix_clone/screens/homescreen_page.dart';
 import 'package:bloc/bloc.dart';
+import 'package:netflix_clone/screens/recommendationscreen.dart';
 import 'package:netflix_clone/screens/searchscreen_page.dart';
 import 'package:netflix_clone/screens/upcomingscreen_page.dart';
 import 'package:netflix_clone/widgets/responsive.dart';
@@ -17,13 +18,13 @@ class NavScreenPageState extends State<NavScreenPage>{
     HomeScreenPage(key:PageStorageKey("homescreen")),
     SearchScreenPage(key: PageStorageKey("searchscreen"),),
     UpcomingScreenPage(key: PageStorageKey("upcomingscreen")),
-    DownloadScreenPage(key: PageStorageKey("downloadscreen"),),
+    RecommendationScreen()
   ];
   final Map<String,IconData> _icons = const{
     "Home": Icons.home,
     "Search":Icons.search,
     "Coming Soon":Icons.queue_play_next,
-    "Downloads":Icons.file_download,
+    "For you":Icons.recommend,
   };
   int _currentIndex=0;
   @override

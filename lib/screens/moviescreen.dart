@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,8 +15,8 @@ import 'package:readmore/readmore.dart';
 import 'package:video_player/video_player.dart';
 
 class MovieScreen extends StatefulWidget {
-  dynamic movie;
-   MovieScreen({Key? key,required this.movie}) : super(key: key);
+  dynamic  movie;
+    MovieScreen({Key? key,required this.movie}) : super(key: key);
 
   @override
   State<MovieScreen> createState() => _MovieScreenState();
@@ -334,25 +336,95 @@ class _MovieScreenState extends State<MovieScreen> {
           SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  foregroundDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(0),
-                    gradient: LinearGradient(colors: [
-                      Theme.of(context).primaryColor.withOpacity(0.8),
-                      Colors.transparent
+                ShaderMask(
+                  shaderCallback: (rect) {
+                    return LinearGradient(
+                      begin: Alignment.center,
+                      end: Alignment.bottomCenter,
+                      colors: [ Colors.black,
+                        Colors.black.withOpacity(0)],
+                      stops: [0.1,0.75],
+
+                    ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
+                  },
+
+                  blendMode: BlendMode.dstIn,
+                  child: Column(
+                    children: [
+                      Image.network(
+                        'http://image.tmdb.org/t/p/w500'
+                            + widget.movie["backdrop_path"],
+
+                        height: 400,
+                        fit: BoxFit.cover,
+                      ),
+                      ImageFiltered(imageFilter: ImageFilter.blur(sigmaX: 10,
+                          sigmaY: 10),
+                       )
                     ],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter
-                    )
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.50,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(image: NetworkImage( 'http://image.tmdb.org/t/p/w500'
-                              + widget.movie["backdrop_path"]),
-                          fit:BoxFit.cover )
+
                   ),
                 ),
+
+                // Container(
+                //   child: Stack(
+                //     alignment: Alignment.bottomCenter,
+                //
+                //
+                //     children: [
+                //       Image.network( 'http://image.tmdb.org/t/p/w500'
+                //           + widget.movie["backdrop_path"],fit: BoxFit.cover,
+                //       alignment: Alignment.bottomCenter,),
+                //       ImageFiltered(imageFilter:ImageFilter.blur(sigmaX: 10,sigmaY: 10),
+                //       child:  ShaderMask(
+                //           shaderCallback: (rect) {
+                //             return LinearGradient(
+                //               begin: Alignment.topCenter,
+                //               end: Alignment.bottomCenter,
+                //               colors: [ Colors.black,
+                //                 Colors.transparent],
+                //               stops: [0.1,0.75]
+                //             ).createShader(rect);
+                //           },
+                //           blendMode: BlendMode.dstOut,
+                //           child: Image.network(
+                //               'http://image.tmdb.org/t/p/w500'
+                //               + widget.movie["backdrop_path"],
+                //
+                //
+                //             fit: BoxFit.cover,
+                //             alignment: Alignment.bottomCenter,
+                //           ),
+                //         ),)
+                //
+                //
+                //
+                //
+                //     ],
+                //   ),
+                  // foregroundDecoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(0),
+                  //   gradient: LinearGradient(colors: [
+                  //     Theme.of(context).primaryColor.withOpacity(0.8),
+                  //     Colors.white70
+                  //   ],
+                  //
+                  //     begin: Alignment.center,
+                  //     end: Alignment.bottomCenter
+                  //   )
+                  // ),
+                  // width: MediaQuery.of(context).size.width,
+                  // height: MediaQuery.of(context).size.height * 0.50,
+                  // decoration: BoxDecoration(
+                  //   image: DecorationImage(image: NetworkImage( 'http://image.tmdb.org/t/p/w500'
+                  //             + widget.movie["backdrop_path"]),
+                  //
+                  //
+                  //         fit:BoxFit.cover ),
+                  //
+                  //
+                  // ),
+
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -429,7 +501,6 @@ class _MovieScreenState extends State<MovieScreen> {
                                   Divider(
                                     color: Colors.grey,
                                   ),
-
                                   TextButton(onPressed: (){
                                     textFieldDisplayed = true;
                                     setState(() {});
@@ -445,13 +516,7 @@ class _MovieScreenState extends State<MovieScreen> {
                               ),
                       if(textFieldDisplayed)
                                 buildwriteReview(),
-                      //
-
-                    //
                               buildComments(),
-
-
-
                     ],
                   ),
                 )
@@ -512,78 +577,81 @@ class _MovieScreenState extends State<MovieScreen> {
                     ),
                     margin: EdgeInsets.only(right: 15),
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
 
 
-                      children: [
+                        children: [
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            hasImage ?
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              hasImage ?
 
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image:
-
-                                DecorationImage(
-                                  image:
-                                  NetworkImage('http://image.tmdb.org/t/p/w500'
-                                      + snapshot
-                                          .data[index]["author_details"]["avatar_path"]),
-
-
-                                ),
-                              ),
-                            ) :
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image:
 
                                   DecorationImage(
-                                      image:
-                                      AssetImage("assets/netflix.jpeg",
-                                      ))
+                                    image:
+                                    NetworkImage('http://image.tmdb.org/t/p/w500'
+                                        + snapshot
+                                            .data[index]["author_details"]["avatar_path"]),
+
+
+                                  ),
+                                ),
+                              ) :
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image:
+
+                                    DecorationImage(
+                                        image:
+                                        AssetImage("assets/netflix.jpeg",
+                                        ))
+
+                                ),
 
                               ),
+                              SizedBox(
+                                width: 10,
+                              ),
 
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-
-                            Text(snapshot
-                                .data[index]["author_details"]["username"],
-                              style: TextStyle(color: Colors.white),)
+                              Text(snapshot
+                                  .data[index]["author_details"]["username"],
+                                style: TextStyle(color: Colors.white),)
 
 
-                          ],
-                        ),
+                            ],
+                          ),
 
-                        SizedBox(
-                          width: 10,
-                        ),
+                          SizedBox(
+                            width: 10,
+                          ),
 
 
-                        Padding(padding: EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                          child: ReadMoreText(snapshot.data[index]["content"],
-                            trimLines: 2,
-                            trimMode: TrimMode.Line,
-                            style: GoogleFonts.lato(
-                                color: Colors.white70,
-                                height: 1.5,
-                                fontWeight: FontWeight.w500
-                            ),),),
-                      ],
+                          Padding(padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                            child: ReadMoreText(snapshot.data[index]["content"],
+                              trimLines: 2,
+                              trimMode: TrimMode.Line,
+                              style: GoogleFonts.lato(
+                                  color: Colors.white70,
+                                  height: 1.5,
+                                  fontWeight: FontWeight.w500
+                              ),),),
+                        ],
 
+                      ),
                     ),
 
 
@@ -593,7 +661,7 @@ class _MovieScreenState extends State<MovieScreen> {
           } else{
             return Text("");
           }
-          
+
         }
       ),
     );

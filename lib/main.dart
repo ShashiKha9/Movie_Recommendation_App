@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_clone/cubit/appbar_cubit.dart';
+import 'package:netflix_clone/screens/homescreen_page.dart';
 import 'package:netflix_clone/screens/navscreen_page.dart';
 import 'package:netflix_clone/screens/recommendationscreen.dart';
 import 'package:netflix_clone/screens/registerscreen_page.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget{
 
 
           ),
-          home: NavScreenPage(),
+            home: NavScreenPage(),
         )
     );
   }

@@ -115,7 +115,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
 
 
       var response = await http.get(
-          Uri.parse("http://192.168.1.100:3000/movie?title=$title"));
+          Uri.parse("https://flask-deployment-2-ejm8.onrender.com/"));
       print("shashi 2': ${response.body}");
       print('rec2');
       logger.d("kha2_response",time: DateTime.now());

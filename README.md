@@ -1,4 +1,4 @@
-# netflix_clone
+# Movie Recommendation App
 
 A new Flutter project.
 
